@@ -5,8 +5,8 @@ import { Stats, OrbitControls, Environment, useGLTF, Clone, Html, ContactShadows
 import { useControls } from 'leva';
 
 const Models = [
-  { title: 'CRO1', url: './CRO1.glb', miEscala: 1.1, miPosicion: 4 },
-  { title: 'CRO2', url: './CRO2.glb', miEscala: 1.1, miPosicion: 4 }
+  { title: 'ALOE', url: './ALOE.glb', miEscala: .7, miPosicion: 8 },
+  // { title: 'CRO2', url: './CRO2.glb', miEscala: 1.1, miPosicion: 4 }
   // { title: '3', url: './3.glb', miEscala: 1.1, miPosicion: 4 },
   // { title: '4', url: './4.glb', miEscala: 1.1, miPosicion: 4 },
   // { title: '5', url: './5.glb', miEscala: 1.1, miPosicion: 4 },
@@ -35,7 +35,7 @@ function Model({ url, miEscala, miPosicion }) {
   }, [scene]);
 
   return (
-    <group ref={group} position={[0, 0, .0]} scale={miEscala}>
+    <group ref={group} position={[0.0, 1.6, .0]} scale={miEscala}>
       <Clone object={scene} castShadow receiveShadow />
     </group>
   );
