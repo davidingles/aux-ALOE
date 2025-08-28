@@ -5,9 +5,9 @@ import { Stats, OrbitControls, Environment, useGLTF, Clone, Html, ContactShadows
 import { useControls } from 'leva';
 
 const Models = [
-  { title: 'ALOE', url: './ALOE.glb', miEscala: .7, miPosicion: 8 },
-  { title: 'MARSELLA', url: './MARSELLA.glb', miEscala: .7, miPosicion: 8 },
-  { title: 'SENSACION', url: './SENSACION.glb', miEscala: .7, miPosicion: 8 },
+  { title: 'ALOE', url: './ALOE.glb', miEscala: .7, miPosicion: -.1 },
+  { title: 'MARSELLA', url: './MARSELLA.glb', miEscala: .7, miPosicion: -.1 },
+  { title: 'SENSACION', url: './SENSACION.glb', miEscala: .7, miPosicion: -.1 },
   // { title: '4', url: './4.glb', miEscala: 1.1, miPosicion: 4 },
   // { title: '5', url: './5.glb', miEscala: 1.1, miPosicion: 4 },
   // { title: '6', url: './6.glb', miEscala: 1.1, miPosicion: 4 },
@@ -16,13 +16,14 @@ const Models = [
   // { title: '9', url: './9.glb', miEscala: 1.1, miPosicion: 4 },
 ];
 
-function Model({ url, miEscala, miPosicion }) {
+function Model({ url, miEscala, miPosicion, y }) {
   const { scene } = useGLTF(url);
   const group = useRef();
 
   useFrame((state) => {
     const t = state.clock.getElapsedTime();
-    group.current.position.y = THREE.MathUtils.lerp(group.current.position.y, (-2 + Math.sin(t)) / 90, 0.6);
+    const verticalOffset = miPosicion + y;
+    group.current.position.y = THREE.MathUtils.lerp(group.current.position.y, verticalOffset + Math.sin(t) / 90, 0.6);
   });
 
   useEffect(() => {
@@ -35,7 +36,7 @@ function Model({ url, miEscala, miPosicion }) {
   }, [scene]);
 
   return (
-    <group ref={group} position={[0.0, 1.6, .0]} scale={miEscala}>
+    <group ref={group} position={[0.0, miPosicion, .0]} scale={miEscala}>
       <Clone object={scene} castShadow receiveShadow />
     </group>
   );
@@ -48,11 +49,12 @@ function Fallback() {
 export default function EstucheConAsas({ title }) {
   const [currentTitle, setCurrentTitle] = useState(title);
 
-  const { modelo } = useControls('Model', {
+  const { modelo, y } = useControls('Model', {
     modelo: {
       value: title,
       options: Models.map(({ title }) => title),
     },
+    y: { value: 0, min: -2, max: 2, step: 0.01 },
   });
 
   useEffect(() => {
@@ -61,8 +63,8 @@ export default function EstucheConAsas({ title }) {
 
   const modelIndex = Models.findIndex((m) => m.title === currentTitle);
   const modelUrl = modelIndex !== -1 ? Models[modelIndex].url : null;
-  const modelEscala = modelIndex !== -1 ? Models[modelIndex].miEscala : escala;
-  const modelPosicion = modelIndex !== -1 ? Models[modelIndex].miPosicion : posicion;
+  const modelEscala = modelIndex !== -1 ? Models[modelIndex].miEscala : 1;
+  const modelPosicion = modelIndex !== -1 ? Models[modelIndex].miPosicion : 0;
 
   return (
     <Canvas camera={{ position: [0, 0.4, -0.6], near: 0.01, fov: 50 }}>
@@ -73,7 +75,7 @@ export default function EstucheConAsas({ title }) {
       <pointLight position={[100, -100, -100]} intensity={99999} decay={2} />
       <pointLight position={[100, -100, 100]} intensity={99999} decay={2} />
       <Suspense fallback={<Fallback />}>
-        {modelUrl && <Model url={modelUrl} miEscala={modelEscala} miPosicion={modelPosicion} />}
+        {modelUrl && <Model url={modelUrl} miEscala={modelEscala} miPosicion={modelPosicion} y={y} />}
       </Suspense>
       <OrbitControls autoRotate autoRotateSpeed={0.6} />
       <ContactShadows resolution={512} scale={30} position={[0, -0.2, 0]} blur={0.1} opacity={0.5} far={10} color='#8a6246' />
