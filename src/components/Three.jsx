@@ -6,8 +6,8 @@ import { useControls } from 'leva';
 
 const Models = [
   { title: 'ALOE', url: './ALOE.glb', miEscala: .7, miPosicion: 8 },
-  // { title: 'CRO2', url: './CRO2.glb', miEscala: 1.1, miPosicion: 4 }
-  // { title: '3', url: './3.glb', miEscala: 1.1, miPosicion: 4 },
+  { title: 'MARSELLA', url: './MARSELLA.glb', miEscala: .7, miPosicion: 8 },
+  { title: 'SENSACION', url: './SENSACION.glb', miEscala: .7, miPosicion: 8 },
   // { title: '4', url: './4.glb', miEscala: 1.1, miPosicion: 4 },
   // { title: '5', url: './5.glb', miEscala: 1.1, miPosicion: 4 },
   // { title: '6', url: './6.glb', miEscala: 1.1, miPosicion: 4 },
